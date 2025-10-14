@@ -1,0 +1,45 @@
+// 1. Load Case Nodes
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Case.csv]' AS row
+MERGE (c:Case {id: row.id})
+SET 
+    c.name = row.name,
+    c.status = row.status,
+    c.dateOpened = date(row.dateOpened);
+
+
+// 2. Load Person Nodes
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Person.csv]' AS row
+MERGE (p:Person {id: row.id})
+SET 
+    p.name = row.name,
+    p.type = row.type,
+    p.status = row.status,
+    p.dob = date(row.dob);
+
+
+// 3. Load Location Nodes
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Location.csv]' AS row
+MERGE (l:Location {id: row.id})
+SET 
+    l.name = row.name,
+    l.type = row.type,
+    l.address = row.address,
+    l.city = row.city;
+
+
+// 4. Load Event Nodes
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Event.csv]' AS row
+MERGE (e:Event {id: row.id})
+SET 
+    e.type = row.type,
+    e.date = datetime(row.date),
+    e.description = row.description;
+
+
+// 5. Load Evidence Nodes
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Evidence.csv]' AS row
+MERGE (ev:Evidence {id: row.id})
+SET 
+    ev.type = row.type,
+    ev.status = row.status,
+    ev.description = row.description;
