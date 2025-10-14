@@ -1,0 +1,58 @@
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Person_Person_Rel.csv]' AS row
+// Match Person nodes using the special column headers from the CSV
+MATCH (p1:Person {id: row[":START_ID(Person)"]})
+MATCH (p2:Person {id: row[":END_ID(Person)"]})
+// Use APOC to create the relationship with the dynamic type from the :TYPE column
+CALL apoc.create.relationship(
+  p1,
+  row[":TYPE"], // <--- Dynamic Relationship Type
+  {relationshipType: row.relationshipType}, // Property from the CSV
+  p2
+) YIELD rel
+RETURN count(rel) AS Relationships_Person_to_Person_Created;
+
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Case_Related_Rel.csv]' AS row
+MATCH (p:Person {id: row[":START_ID(Person)"]})
+MATCH (c:Case {id: row[":END_ID(Case)"]})
+// Use APOC to create the relationship with the dynamic type
+CALL apoc.create.relationship(
+  p,
+  row[":TYPE"], // <--- Dynamic Relationship Type
+  {outcome: row.outcome}, // Property from the CSV
+  c
+) YIELD rel
+RETURN count(rel) AS Relationships_Person_to_Case_Created;
+
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Person_Location_Rel.csv]' AS row
+MATCH (p:Person {id: row[":START_ID(Person)"]})
+MATCH (l:Location {id: row[":END_ID(Location)"]})
+// Use APOC to create the relationship with the dynamic type
+CALL apoc.create.relationship(
+  p,
+  row[":TYPE"], // <--- Dynamic Relationship Type
+  {date: date(row.date), time: row.time}, // Properties from the CSV, converting date
+  l
+) YIELD rel
+RETURN count(rel) AS Relationships_Person_to_Location_Created;
+
+LOAD CSV WITH HEADERS FROM '[https://raw.githubusercontent.com/Jamedw/FALL2025_CSC480/refs/heads/main/Event_Evidence_Location_Rel.csv]' AS row
+// Attempt to match the start node as an Event or an Evidence node
+OPTIONAL MATCH (n1_event:Event {id: row[":START_ID"]})
+OPTIONAL MATCH (n1_evidence:Evidence {id: row[":START_ID"]})
+
+// Match the end node as a Location
+MATCH (l:Location {id: row[":END_ID"]})
+
+// Consolidate the start node: it will be n1_event if found, otherwise n1_evidence
+WITH coalesce(n1_event, n1_evidence) AS startNode, l, row
+
+// Filter out any rows where the start node couldn't be found
+WHERE startNode IS NOT NULL
+
+CALL apoc.create.relationship(
+  startNode,
+  row[":TYPE"], // <--- Dynamic Relationship Type
+  {date: date(row.date)}, // Property from the CSV, converting date
+  l
+) YIELD rel
+RETURN count(rel) AS Relationships_Event_Evidence_to_Location_Created;
