@@ -1,0 +1,79 @@
+// --- 1. NODE CREATION (MERGE ensures nodes are unique based on 'id') ---
+
+// 1.1 Create the central Case node
+LOAD CSV WITH HEADERS FROM 'file:///Case.csv' AS row
+MERGE (c:Case {id: row.id})
+SET 
+    c.name = row.name,
+    c.status = row.status,
+    c.dateOpened = row.dateOpened;
+
+// 1.2 Create Person nodes
+LOAD CSV WITH HEADERS FROM 'file:///Person.csv' AS row
+MERGE (p:Person {id: row.id})
+SET 
+    p.name = row.name,
+    p.type = row.type,
+    p.status = row.status,
+    p.dob = row.dob;
+
+// 1.3 Create Location nodes
+LOAD CSV WITH HEADERS FROM 'file:///Location.csv' AS row
+MERGE (l:Location {id: row.id})
+SET 
+    l.name = row.name,
+    l.type = row.type,
+    l.address = row.address,
+    l.city = row.city;
+
+// 1.4 Create Event nodes
+LOAD CSV WITH HEADERS FROM 'file:///Event.csv' AS row
+MERGE (e:Event {id: row.id})
+SET 
+    e.type = row.type,
+    e.date = row.date,
+    e.description = row.description;
+
+// 1.5 Create Evidence nodes
+LOAD CSV WITH HEADERS FROM 'file:///Evidence.csv' AS row
+MERGE (ev:Evidence {id: row.id})
+SET 
+    ev.type = row.type,
+    ev.status = row.status,
+    ev.description = row.description;
+
+
+// --- 2. RELATIONSHIP CREATION (MATCH finds nodes, MERGE creates relationship) ---
+
+// 2.1 Connect Persons to the Case (from Case_Related_Rel.csv)
+LOAD CSV WITH HEADERS FROM 'file:///Case_Related_Rel.csv' AS row
+MATCH (p:Person {id: row.START_ID})
+MATCH (c:Case {id: row.END_ID})
+MERGE (p)-[r:`${row.TYPE}`]->(c) // Use a dynamic relationship type based on the CSV
+SET r.outcome = row.outcome;
+
+// 2.2 Connect Persons to Locations (from Person_Location_Rel.csv)
+LOAD CSV WITH HEADERS FROM 'file:///Person_Location_Rel.csv' AS row
+MATCH (p:Person {id: row.START_ID})
+MATCH (l:Location {id: row.END_ID})
+// MERGE on the exact relationship type from the row.TYPE column
+MERGE (p)-[r:`${row.TYPE}`]->(l) 
+SET 
+    r.date = row.date,
+    r.time = row.time;
+
+// 2.3 Connect Persons to Persons (from Person_Person_Rel.csv)
+LOAD CSV WITH HEADERS FROM 'file:///Person_Person_Rel.csv' AS row
+MATCH (p1:Person {id: row.START_ID})
+MATCH (p2:Person {id: row.END_ID})
+// MERGE on the exact relationship type from the row.TYPE column
+MERGE (p1)-[r:`${row.TYPE}`]->(p2)
+SET r.relationshipType = row.relationshipType;
+
+// 2.4 Connect Evidence to Locations (from Event_Evidence_Location_Rel.csv)
+LOAD CSV WITH HEADERS FROM 'file:///Event_Evidence_Location_Rel.csv' AS row
+MATCH (e:Evidence {id: row.START_ID})
+MATCH (l:Location {id: row.END_ID})
+// MERGE on the exact relationship type from the row.TYPE column
+MERGE (e)-[r:`${row.TYPE}`]->(l)
+SET r.date = row.date;
