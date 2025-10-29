@@ -1,0 +1,11 @@
+Start Node,Relationship Type (TYPE),End Node,Verbose Description for Induction,Attributes
+ORGANIZATION,CONDUCTED,EVENT,The organization initiated or carried out the event.,None
+EVIDENCE,SUPPORTS,INFORMATION,The evidence corroborates or proves a piece of information.,strength: Rating (1-5) of support.
+EVIDENCE,REFUTES,INFORMATION,The evidence contradicts a piece of information.,strength: Rating (1-5) of refutation.
+EVENT,GENERATED,INFORMATION,The event resulted in a new piece of documented information.,None
+PERSON,PROVIDED,INFORMATION,The person created or delivered the information.,date: Date the information was provided.
+LOCATION,IS_CLOSE_TO,LOCATION,Indicates geographical proximity between two locations.,distance: Actual distance or Qualitative ('Adjacent').
+EVENT,PRECEDES_BY_CHRONOLOGY,EVENT,Indicates a strict chronological order.,timeDifferenceSeconds: Integer time difference in seconds.
+EVENT,ENABLES,EVENT,Indicates that Event_A was a prerequisite or condition for Event_B to occur. Crucial for rule induction.,causalStrength: Rating (1-5) of how dependent Event_B was on Event_A.
+EVENT,FOLLOWED_IMMEDIATELY_BY,EVENT,Indicates events happened in quick succession.,"MaxDelayMinutes: A threshold for ""immediately""."
+PERSON,LAST_SEEN_AT,EVENT,Specifically links the missing person to the DISAPPEARANCE event.,None
