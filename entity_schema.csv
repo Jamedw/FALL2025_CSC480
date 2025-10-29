@@ -1,0 +1,26 @@
+Entity,Attribute,Data Type,Verbose Description for Induction,Example Value
+CASE,id,String,A unique identifier for the missing person case.,CASE_KS
+CASE,name,String,"The formal name of the case, typically the victim's name.",Murder of Kristin Smart
+CASE,status,String,The resolution status of the case. Key for induction.,Solved (Conviction)
+CASE,dateOpened,Date,The date the case was officially opened or reported missing.,1996-05-27
+PERSON,id,String,A unique identifier for the person.,PF
+PERSON,roleInCase,String,"The person's primary role (e.g., 'VICTIM', 'SUSPECT'). Key for induction.",SUSPECT
+PERSON,isMissing,Boolean,TRUE if the person is the subject of the missing person case.,TRUE/FALSE
+EVENT,id,String,A unique identifier for the event.,ARRESTS
+EVENT,type,String,The classification of the event. Key for induction.,Arrests of Flores
+EVENT,date,Datetime,The precise date and time when the event occurred.,2021-04-13
+EVENT,description,String,"A detailed narrative of the event, including involved parties and context.",Paul charged with Murder...
+EVIDENCE,id,String,A unique identifier for the piece of evidence.,BIOLOGICAL
+EVIDENCE,type,String,"The category of the evidence (e.g., 'Biological Evidence', 'Vehicle'). Key for induction.",Biological Evidence
+EVIDENCE,status,String,"The current state of the evidence (e.g., 'Analyzed', 'Seized').",Analyzed (Human Blood)
+EVIDENCE,description,String,"Contextual details about the evidence, its specific nature, and finding.",Found in soil samples...
+LOCATION,id,String,A unique identifier for the location.,RF_HOME
+LOCATION,name,String,The common name of the location.,Ruben Flores Home
+LOCATION,type,String,"The classification of the location (e.g., 'Primary Residence', 'Search Site').",Primary Residence/Burial Site
+LOCATION,city,String,The city/municipality where the location is situated.,Arroyo Grande
+ORGANIZATION,id,String,"A unique identifier for the organization (e.g., law enforcement, legal, media).",FBI
+ORGANIZATION,name,String,The full name of the organization.,SLO Sheriff's Office
+ORGANIZATION,type,String,The classification of the organization.,Law Enforcement
+INFORMATION,id,String,A unique identifier for a specific documented piece of knowledge.,PF_ALIBI
+INFORMATION,category,String,"The classification of the information (e.g., 'Alibi', 'Motive Theory', 'Witness Statement'). Crucial for induction.",Alibi
+INFORMATION,sourceConfidence,Integer (1-5),Confidence score in the information's source or reliability.,5 (High)
