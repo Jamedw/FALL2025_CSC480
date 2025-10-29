@@ -1,0 +1,13 @@
+Start Node,Relationship Type (TYPE),End Node,Verbose Description for Induction,Attributes
+PERSON,VICTIM_IN,CASE,The person is the victim of the case.,None
+PERSON,SUSPECT_IN,CASE,The person is a suspect in the case.,"outcome: Final legal result for this person (e.g., 'Convicted')."
+PERSON,ACCUSED_IN,CASE,The person was formally charged in the case.,"outcome: Final legal result for this person (e.g., 'Acquitted')."
+PERSON,FILED_CIVIL_SUIT_IN,CASE,The person initiated a civil legal action related to the case.,None
+EVIDENCE,FOUND_AT,LOCATION,The evidence was physically discovered at the location.,date: Date of discovery/finding.
+EVIDENCE,SEIZED_FROM,LOCATION,The evidence was legally removed from the location.,date: Date of seizure.
+CASE,HAS_EVENT,EVENT,The event is a key step in the investigation of the case.,None
+EVENT,OCCURRED_AT,LOCATION,The event physically took place at this location.,None
+EVENT,INVOLVED_EVIDENCE,EVIDENCE,The event resulted in the creation or discovery of this evidence.,None
+PERSON,PARTICIPATED_IN,EVENT,"The person was a key participant in the event (e.g., arrested, last seen).",None
+LOCATION,OWNED_BY,PERSON,Establishes property ownership.,"status: Ownership Type (e.g., 'Primary', 'Rental')."
+PERSON,REPRESENTS,PERSON,Acts as the legal representative for another person.,legalContext: Civil or Criminal.
